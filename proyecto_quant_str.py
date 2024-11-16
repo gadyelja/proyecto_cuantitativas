@@ -11,7 +11,7 @@ import streamlit as st
 ##########################################################################################
 
 # Importar base de datos
-file_path = r"C:\Users\gadyh\OneDrive\Documentos\UNISABANA\6 SEMESTRE\FINANZAS CUANTITATIVAS\Proyecto\base_final .xlsx"
+file_path = "base_final .xlsx"
 data = pd.read_excel(file_path)
 
 # Preprar base de datos para el modelo
