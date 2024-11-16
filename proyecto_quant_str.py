@@ -11,7 +11,7 @@ import streamlit as st
 ##########################################################################################
 
 # Importar base de datos
-file_path = "base_final .xlsx"
+file_path = r"C:\Users\gadyh\OneDrive\Documentos\UNISABANA\6 SEMESTRE\FINANZAS CUANTITATIVAS\Proyecto\base_final .xlsx"
 data = pd.read_excel(file_path)
 
 # Preprar base de datos para el modelo
@@ -156,8 +156,8 @@ prediccion = clf.predict(data_input)
 # Mostrar la predicción
 st.write("La calificación crediticia predicha es:", prediccion[0])
 
-def prediccion_credito(prediccion, loan_amnt, annual_inc):
-    rangos = {
+#def prediccion_credito(prediccion, loan_amnt, annual_inc):
+rangos = {
         "A": 0.6,
         "B": 0.45,
         "C": 0.4,
@@ -167,14 +167,17 @@ def prediccion_credito(prediccion, loan_amnt, annual_inc):
         "G": 0.2   
     }
     
-    umbral = rangos.get(prediccion[0], 0) 
+umbral = rangos.get(prediccion[0], 0) 
     
-    ratio = loan_amnt / annual_inc
-    
-    return (ratio)
+ratio = loan_amnt / annual_inc 
+st.write(f"El ratio deuda/ingreso es: {ratio}")
 
-credito_predict = prediccion_credito(prediccion, loan_amnt, annual_inc)
-st.write(f"El ratio deuda/ingreso es: {credito_predict}")
+credito_recomendado = ratio * loan_amnt
+if ratio <= umbral:
+    st.write("Se recomienda dar credito")
+else:
+    st.write("No se recomienda dar credito a esta tasa")
+    st.write(f"Se recomienda dar credito en un monto máximo de: ${credito_recomendado}")
 
 
 
