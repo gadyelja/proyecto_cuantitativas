@@ -11,7 +11,7 @@ import streamlit as st
 ##########################################################################################
 
 # Importar base de datos
-file_path = "base_final .xlsx"
+file_path = r"C:\Users\gadyh\OneDrive\Documentos\UNISABANA\6 SEMESTRE\FINANZAS CUANTITATIVAS\Proyecto\base_final .xlsx"
 data = pd.read_excel(file_path)
 
 # Preprar base de datos para el modelo
@@ -85,6 +85,7 @@ labels = ['<1000', '1000-2000', '2000-5000', '5000-10000', '10000-20000', '20000
 
 # Crear una nueva columna con los rangos categorizados
 data['loan_range'] = pd.cut(data['loan_amnt'], bins=bins, labels=labels, right=False)
+
 # Calcular la cantidad de personas en cada rango
 counts = data['loan_range'].value_counts(sort=False)
 
@@ -128,6 +129,9 @@ proposito = ["Business", "Credit card refinancing", "Debt consolidation", "Car f
              "Home improvement", "Home buying", "Medical expenses","Vacation", "Other"]
 title = st.sidebar.selectbox("Proposito del credito: ", proposito)
 
+casa = ["MORTGAGE", "OWN", "RENT"]
+home_ownership = st.sidebar.selectbox("Tipo de vivienda : ", casa)
+
 # Data Frame con los datos del usuario
 data_input = pd.DataFrame({
     "loan_amnt": [loan_amnt],
@@ -135,10 +139,11 @@ data_input = pd.DataFrame({
     'int_rate': [int_rate],
     'term': [term],
     'emp_length': [emp_length],
-    'title': [title]
+    'title': [title],
+    "home_ownership": [home_ownership]
 })
 
-data_input = pd.get_dummies(data_input, columns=['term', 'emp_length', 'title'], drop_first=True)
+data_input = pd.get_dummies(data_input, columns=['term', 'emp_length', 'title', "home_ownership"], drop_first=True)
 
 # Asegurar que las columnas coincidan
 missing_cols = set(X.columns) - set(data_input.columns)
@@ -156,7 +161,6 @@ prediccion = clf.predict(data_input)
 # Mostrar la predicción
 st.write("La calificación crediticia predicha es:", prediccion[0])
 
-#def prediccion_credito(prediccion, loan_amnt, annual_inc):
 rangos = {
         "A": 0.6,
         "B": 0.45,
